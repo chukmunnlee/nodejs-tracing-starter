@@ -24,7 +24,7 @@ public class ShortCodeService {
     select original_url from urls where short_code = ?
   """;
   public static final String RECORD_VISIT_SQL = """
-    insert into visits (short_code, ip_address, country, city, user_agent) value (?, ?, ?, ?, ?)
+    insert into visits (short_code, ip_address, country, city, user_agent) values (?, ?, ?, ?, ?)
   """;
 
   @Autowired

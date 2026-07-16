@@ -18,11 +18,11 @@ services:
       - app
 
   redirector:
-    build: .
-    command: npm run redirector
+    build: ./jredirector
+    #command: npm run redirector
     environment:
       PORT: ${REDIRECTOR_PORT}
-      DATABASE_URL: ${DATABASE_URL}
+      JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
       REDIS_URL: ${REDIS_URL}
     depends_on:
       db:
@@ -33,7 +33,7 @@ services:
       - app
 
   db:
-    image: postgres:18.3-trixie
+    image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -46,9 +46,11 @@ services:
       interval: 3s
       timeout: 3s
       retries: 5
+    networks:
+      - app
 
   redis:
-    image: redis:8.6.2-trixie
+    image: redis
     healthcheck:
       test: [CMD, redis-cli, ping]
       interval: 3s
@@ -58,7 +60,7 @@ services:
       - app
 
 volumes:
-  mysqldata:
+  pgdata:
 
 networks:
   app:
