@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"shortener": "node --experimental-loader=@opentelemetry/instrumentation/hook.mjs --import @opentelemetry/auto-instrumentations-node/register shortener/index.js",
+		"shortener": "node shortener/index.js",
 		"redirector": "node redirector/index.js"
 	},
 	"dependencies": {
