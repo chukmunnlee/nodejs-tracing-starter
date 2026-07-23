@@ -1,4 +1,4 @@
-FROM  maven:3.9.16-eclipse-temurin-26-noble AS builder
+FROM  maven:3.9.16-eclipse-temurin-21-noble AS builder
 
 WORKDIR /src
 COPY pom.xml .
@@ -6,7 +6,7 @@ COPY src src
 
 RUN mvn clean package -Dmaven.test.skip=true
 
-FROM eclipse-temurin:26.0.1_8-jre-noble
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
@@ -19,4 +19,4 @@ ENV REDIS_URL="redis://redis:6379"
 EXPOSE ${PORT}
 
 SHELL [ "/bin/sh", "-c" ]
-ENTRYPOINT java -jar jredirector.jar
+ENTRYPOINT java -XX:+EnableDynamicAgentLoading -jar jredirector.jar

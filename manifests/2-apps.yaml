@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: redirector
-        image: chukmunnlee/jredirector:v1-demo
+        image: chukmunnlee/jredirector:v1.1-jdk21
         imagePullPolicy: IfNotPresent
         env:
         - name: PORT
