@@ -1,0 +1,23 @@
+Create a P99 latency dashboard from otel's spanmetrics connector for the services running in shortener namespace. 
+Create the dashboard if it does not exists. Visualize the P99 latency as a heatmap.
+  Anthropic: USD 2.50
+  Gemini: 
+
+Check the services in shortener namespace at let me know if there is a latency spike over the last 5 minutes.
+  Gemini: USD 0.92
+  Anthropic:
+
+Create a dashboard in Prometheus to allow me to monitor the P90 and P99 response latency for the services in shortener namespace.
+  Gemini: USD 0.92 (18.55)
+
+Claude
+  Show the cpu and memory consumption for all the pods in the entire cluster. 
+  List them in descending order for memory consumption. 
+  Only use the available tools in the registered MCP servers.
+
+    Will report that gateway-otelcol-collector CPU is 100%
+
+  Have a look at gateway-otelcol-collector and let me know what is the issue
+    Will report that logging is set to detailed
+
+

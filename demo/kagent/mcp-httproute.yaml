@@ -1,0 +1,46 @@
+---
+# only use this if agentgateway is not installed
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana-mcp-httproute
+  namespace: kagent
+spec:
+  hostnames:
+  - grafana-mcp.192.168.39.200.nip.io
+  parentRefs:
+  - name: default-gtw
+    namespace: default
+    port: 80
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /mcp
+    backendRefs:
+    - name: kagent-grafana-mcp
+      namespace: kagent
+      port: 8000
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tools-server-httproute
+  namespace: kagent
+spec:
+  hostnames:
+  - tools.192.168.39.200.nip.io
+  parentRefs:
+  - name: default-gtw
+    namespace: default
+    port: 80
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /mcp
+    backendRefs:
+    - name: kagent-tools
+      namespace: kagent
+      port: 8084

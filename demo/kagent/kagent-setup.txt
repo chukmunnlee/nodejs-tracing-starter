@@ -1,0 +1,21 @@
+Install kagent cli
+curl https://raw.githubusercontent.com/kagent-dev/kagent/refs/heads/main/scripts/get-kagent | bash
+curl -fsSL https://raw.githubusercontent.com/kagent-dev/kmcp/refs/heads/main/scripts/get-kmcp.sh | bash
+
+# Install KAgent
+k create ns kagent
+export OPENAI_API_KEY="your-api-key-here"
+kagent install --profile=minimal -nkagent
+
+#Get version from kagent cli
+kagent version
+
+helm upgrade kagent oci://ghcr.io/kagent-dev/kagent/helm/kagent \
+  -n kagent \
+  --version <same version the CLI installed> \
+  --reuse-values \
+  -f values-kagent.yaml
+
+helm upgrade kagent oci://ghcr.io/kagent-dev/kagent/helm/kagent -nkagent --version=0.10.0-beta10 --reuse-values -f ./values-kagent.yaml
+
+

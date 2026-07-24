@@ -1,0 +1,19 @@
+grafana-mcp:
+  enabled: true
+  grafana:
+    url: http://prom-stack-grafana.prometheus.svc.cluster.local
+    serviceAccountToken: __GRAFANA_TOKEN_HERE__
+  args:
+    - --allowed-hosts
+    - '*'
+    #- kagent-grafana-mcp.kagent:8000
+
+kagent-tools:
+  enabled: true
+  tools:
+    args:
+    - --tools
+    - k8s,prometheus,utils
+    loglevel: "debug"
+    metrics:
+      port: 8085 # Use a different port than the main service port (8084) to avoid duplicate port definitions

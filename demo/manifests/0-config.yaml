@@ -1,0 +1,53 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shortener
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shortener
+  namespace: shortener
+type: Opaque
+data:
+  DATABASE_URL: cG9zdGdyZXM6Ly9wb3N0Z3Jlczpwb3N0Z3Jlc0BkYi5zaG9ydGVuZXIuc3ZjLmNsdXN0ZXIubG9jYWw6NTQzMi9zaG9ydGVuZXI=
+  JDBC_DATABASE_URL: amRiYzpwb3N0Z3Jlc3FsOi8vZGIuc2hvcnRlbmVyLnN2Yy5jbHVzdGVyLmxvY2FsOjU0MzIvc2hvcnRlbmVy
+  POSTGRES_DB: c2hvcnRlbmVy
+  POSTGRES_PASSWORD: cG9zdGdyZXM=
+  POSTGRES_USER: cG9zdGdyZXM=
+  REDIRECTOR_PORT: MzAwMQ==
+  REDIRECTOR_URL: aHR0cDovL3JlZGlyZWN0b3Iuc2hvcnRlbmVyLnN2Yy5jbHVzdGVyLmxvY2FsOjMwMDE=
+  REDIS_URL: cmVkaXM6Ly9yZWRpcy5zaG9ydGVuZXIuc3ZjLmNsdXN0ZXIubG9jYWw6NjM3OQ==
+  SHORTENER_PORT: MzAwMA==
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shortener
+  namespace: shortener
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS urls (
+      id SERIAL PRIMARY KEY,
+      short_code VARCHAR(10) UNIQUE NOT NULL,
+      original_url TEXT NOT NULL,
+      title TEXT,
+      description TEXT,
+      created_at TIMESTAMPTZ DEFAULT now()
+    );
+
+    CREATE TABLE IF NOT EXISTS visits (
+      id SERIAL PRIMARY KEY,
+      short_code VARCHAR(10) NOT NULL REFERENCES urls(short_code),
+      ip_address TEXT,
+      country VARCHAR(100),
+      city VARCHAR(100),
+      user_agent TEXT,
+      visited_at TIMESTAMPTZ DEFAULT now()
+    );
+
+    CREATE INDEX idx_urls_short_code ON urls(short_code);
+    CREATE INDEX idx_visits_short_code ON visits(short_code);

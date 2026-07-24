@@ -1,0 +1,119 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: agent-gtw
+  namespace: default
+spec:
+  gatewayClassName: agentgateway
+  listeners:
+  - name: http
+    protocol: HTTP
+    hostname: "*.kagent.192.168.39.201.nip.io"
+    port: 80
+    allowedRoutes:
+      namespaces: 
+        from: All
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: ReferenceGrant
+metadata:
+  name: allow-access
+  namespace: kagent
+spec:
+  from:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    namespace: default
+  to:
+  - group: agentgateway.dev
+    kind: AgentgatewayBackend
+
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: grafana-mcp
+  namespace: kagent
+spec:
+  mcp:
+    targets:
+    - name: grafana
+      static:
+        backendRef:
+          name: kagent-grafana-mcp
+        port: 8000
+        path: /mcp
+        protocol: StreamableHTTP
+    - name: tools
+      static:
+        backendRef:
+          name: kagent-tools
+        port: 8084
+        path: /mcp
+        protocol: StreamableHTTP
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana-mcp
+  namespace: default
+spec:
+  hostnames: 
+  - grafana-mcp.kagent.192.168.39.201.nip.io
+  parentRefs:
+   - name: agent-gtw
+     namespace: default
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /mcp
+    backendRefs:
+    - group: agentgateway.dev
+      kind: AgentgatewayBackend
+      name: grafana-mcp
+      namespace: kagent
+
+
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: sre-agent
+  namespace: kagent
+spec:
+  a2a:
+    host: kagent-controller.kagent.svc.cluster.local
+    port: 8083
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: sre-agent
+  namespace: default
+spec:
+  hostnames:
+  - agent.kagent.192.168.39.201.nip.io
+  parentRefs:
+  - name: agent-gtw
+    namespace: default
+  rules:
+  - matches:
+    - path: 
+        type: PathPrefix
+        value: /sre
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path: 
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /api/a2a/kagent/sre-observability-agent
+    backendRefs:
+    - group: agentgateway.dev
+      kind: AgentgatewayBackend
+      name: sre-agent
+      namespace: kagent
