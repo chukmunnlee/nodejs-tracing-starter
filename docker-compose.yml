@@ -32,6 +32,18 @@ services:
     networks:
       - app
 
+  loadgenerator:
+    build: ./loadgenerator
+    environment:
+      HOST_PORT: shortener:${SHORTENER_PORT}
+    ports:
+    - 8089:8089 
+    depends_on:
+      shortener:
+        condition: service_started
+    networks:
+      - app
+
   db:
     image: postgres
     environment:
