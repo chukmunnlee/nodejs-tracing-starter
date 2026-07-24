@@ -8,7 +8,7 @@ const API_SHORTEN = 'api/shorten'
 const SHORTERNER_URL = __ENV.SHORTERNER_URL || 'http://shortener.192.168.39.200.nip.io'
 const LOAD_DURATION = __ENV.LOAD_DURATION || '10m'
 const MAX_SLEEP = parseInt(__ENV.MAX_SLEEP) || 7
-const VUS_COUNT = parseInt(__ENV.VUS_COUNT) || 1
+const VUS_COUNT = parseInt(__ENV.VUS_COUNT) || 5
 const ERROR_RATE = parseFloat(__ENV.ERROR_RATE) || 0.3
 
 const REAL_URLS = new SharedArray('real_urls', function() {
