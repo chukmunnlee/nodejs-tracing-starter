@@ -1,4 +1,5 @@
-FROM  maven:3.9.16-eclipse-temurin-21-noble AS builder
+#FROM  maven:3.9.16-eclipse-temurin-21-noble AS builder
+FROM  maven:3.9.16-eclipse-temurin-26-noble AS builder
 
 WORKDIR /src
 COPY pom.xml .
@@ -6,7 +7,7 @@ COPY src src
 
 RUN mvn clean package -Dmaven.test.skip=true
 
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:26-jdk
 
 WORKDIR /app
 
