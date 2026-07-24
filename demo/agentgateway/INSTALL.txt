@@ -1,0 +1,8 @@
+# Gateway API 1.6.1
+# Install CRDs
+helm upgrade -i --create-namespace \
+  --namespace agentgateway-system \
+  --version v1.3.1 agentgateway-crds oci://cr.agentgateway.dev/charts/agentgateway-crds
+
+# Install Agentgateway
+helm upgrade -i -n agentgateway-system agentgateway oci://cr.agentgateway.dev/charts/agentgateway --version v1.3.1
