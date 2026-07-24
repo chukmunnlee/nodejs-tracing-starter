@@ -34,7 +34,7 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: grafana-mcp
+  name: kagent-mcp
   namespace: kagent
 spec:
   mcp:
@@ -62,7 +62,7 @@ metadata:
   namespace: default
 spec:
   hostnames: 
-  - grafana-mcp.kagent.192.168.39.201.nip.io
+  - kagent-mcp.kagent.192.168.39.201.nip.io
   parentRefs:
    - name: agent-gtw
      namespace: default
@@ -74,9 +74,8 @@ spec:
     backendRefs:
     - group: agentgateway.dev
       kind: AgentgatewayBackend
-      name: grafana-mcp
+      name: kagent-mcp
       namespace: kagent
-
 
 ---
 apiVersion: agentgateway.dev/v1alpha1

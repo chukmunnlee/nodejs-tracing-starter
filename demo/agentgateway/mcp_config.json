@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "kagent-mcp": {
+      "serverUrl": "http://kagent-mcp.kagent.192.168.39.201.nip.io/mcp"
+    }
+  }
+}
+
